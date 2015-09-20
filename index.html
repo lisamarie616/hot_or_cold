@@ -1,0 +1,73 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Hot or Cold</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+  <body>
+    <h1>Hot or Cold</h1>
+
+    <script>
+    function newGame() {
+    var playing = true;
+    var target = Math.floor((Math.random() * 100) + 1);
+
+    /* creates an empty array to be filled with user guesses */
+    var listNums = [];
+
+    while (playing) {
+    	var guess = prompt('Guess a number from 1 to 100. Hit cancel to quit.');
+      var guessNum = +guess;
+      /* allows the user to hit 'cancel' and exit the game */
+      if (guess === null) {
+        console.log('Hit refresh if you decide you would like to play.');
+        playing = false;
+      } 
+        /* requires the user to enter an integer between 1 and 100 */
+        else if (guessNum % 1 != 0 || guessNum < 1 || guessNum > 100) {
+        alert("Please make sure to enter a POSITIVE, WHOLE NUMBER between 1 and 100. No negative numbers, fractions, or words, please.");
+      } else {
+        guessGame();
+      }
+    }
+
+    function guessGame() {
+      if(guessNum === target) {
+        console.log('You got it! If you would like to play again, enter \"newGame()\" into the console.');
+        playing = false;
+      } 
+        /* gives feedback to the user on his or her first guess */
+        else if (listNums.length === 0) {
+        if (Math.abs(guessNum - target) >= 50) {
+          console.log('You are ice cold. Brrrr. The number is at least 50 away from your guess.');
+        } else if (Math.abs(guessNum - target) >= 30 && Math.abs(guessNum - target) < 50) {
+          console.log('You are cold. The number is at least 30 away from your guess, but not more than 50 away.');
+        } else if (Math.abs(guessNum - target) >= 20 && Math.abs(guessNum - target) < 30) {
+          console.log('You are warm. The number is at least 20 away from your guess, but not more than 30 away.'); 
+        } else if (Math.abs(guessNum - target) >= 10 && Math.abs(guessNum - target) < 20) {
+          console.log('You are hot! The number is at least 10 away from your guess, but not more than 20.');
+        } else if (Math.abs(guessNum - target) != 0) {
+          console.log('You are very hot! The number is less than 10 away from your guess.');
+        }
+      } 
+        /* gives feedback to the user on each subsequent guess */
+        else {
+        if (Math.abs(guessNum - target) < Math.abs(listNums[listNums.length - 1] - target) && guessNum > target) {
+          console.log('You are getting warmer! That guess is closer to the number than your last guess, but is too high.');
+        } else if (Math.abs(guessNum - target) < Math.abs(listNums[listNums.length - 1] - target) && guessNum < target) {
+          console.log('You are getting warmer! That guess is closer to the number than your last guess, but is too low.');
+        } else if (Math.abs(guessNum - target) > Math.abs(listNums[listNums.length - 1] - target) && guessNum > target) {
+          console.log('You are getting colder. That guess is further away from the number than your last guess, and is too high.');
+        } else {
+          console.log('You are getting colder. That guess is further away from the number than your last guess, and is too low.')
+        }
+      }
+      /* adds each user guess to the array */
+      listNums.push(guessNum);
+      console.log('Number of times you have guessed: ' + listNums.length + '. Numbers you have guessed so far: ' + listNums);
+    }
+    }
+    newGame();
+    </script>
+  </body>
+</html>
